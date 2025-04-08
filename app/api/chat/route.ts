@@ -7,7 +7,7 @@ export async function POST(req: Request) {
   // Vercel AI SDK の streamText 関数を使用して LLM とのストリーミング通信を開始
   try {
     const result = streamText({
-      model: google('gemini-2.5-pro-preview-03-25'),
+      model: google('gemini-2.0-flash'),
       messages,
     });
     // ストリーミング応答をクライアントに返す
