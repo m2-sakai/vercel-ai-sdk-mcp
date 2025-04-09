@@ -7,13 +7,14 @@ export default function Chat() {
     useChat();
   return (
     <div className='flex flex-col w-full max-w-md py-24 mx-auto gap-4'>
-      <h1 className='text-2xl font-bold'>Chat with Gemini</h1>
+      <h1 className='text-2xl font-bold'>Chat with Open AI</h1>
       {messages.map((message) => (
         <div key={message.id} className='whitespace-pre-wrap'>
           {message.role === 'user' ? 'User: ' : 'AI: '}
           {message.parts.map((part, i) => {
             switch (part.type) {
               case 'text':
+                console.log(part.text);
                 return <div key={`${message.id}-${i}`}>{part.text}</div>;
             }
           })}
