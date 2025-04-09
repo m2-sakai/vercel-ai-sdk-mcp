@@ -16,16 +16,16 @@ export async function POST(req: Request) {
       }),
     })
 
-    const azMcpClient = await createMCPClient({
-      transport: {
-        type: "sse",
-        url: "https://m2-sakai-azure-function-mcp.azurewebsites.net/runtime/webhooks/mcp/sse",
-        headers: {
-          "x-functions-key": process.env.AZURE_FUNCTIONS_KEY || "",
-        },
-      },
-    });
-    console.log('MCP Client:', azMcpClient);
+    // const azMcpClient = await createMCPClient({
+    //   transport: {
+    //     type: "sse",
+    //     url: "https://m2-sakai-azure-function-mcp.azurewebsites.net/runtime/webhooks/mcp/sse",
+    //     headers: {
+    //       "x-functions-key": process.env.AZURE_FUNCTIONS_KEY || "",
+    //     },
+    //   },
+    // });
+    // console.log('MCP Client:', azMcpClient);
 
     const playwrightsClient = await createMCPClient({
       transport: {
@@ -38,12 +38,12 @@ export async function POST(req: Request) {
 
     // Schema Discovery を使用して MCP サーバーからツール定義を取得
     const awsMcpTool = await awsMcpClient.tools();
-    const azMcpTool = await azMcpClient.tools();
+    // const azMcpTool = await azMcpClient.tools();
     const playwrightsTool = await playwrightsClient.tools();
 
     const tools = {
       ...awsMcpTool,
-      ...azMcpTool,
+      // ...azMcpTool,
       ...playwrightsTool,
     }
 
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       onFinish: async () => {
         // ストリーミング応答が完了したら、必ず MCP クライアントの接続を閉じる
         await awsMcpClient.close();
-        await azMcpClient.close();
+        // await azMcpClient.close();
         await playwrightsClient.close();
       },
     });
