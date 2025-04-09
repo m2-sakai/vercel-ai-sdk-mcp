@@ -14,7 +14,6 @@ export default function Chat() {
           {message.parts.map((part, i) => {
             switch (part.type) {
               case 'text':
-                console.log(part.text);
                 return <div key={`${message.id}-${i}`}>{part.text}</div>;
             }
           })}
