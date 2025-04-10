@@ -5,7 +5,7 @@ import { openai } from '@ai-sdk/openai';
 
 export async function POST(req: Request) {
   try {
-    // MCP Client の作成
+    // MCP ライアントの作成
     const awsMcpClient = await createMCPClient({
       transport: new StdioMCPTransport({
         command: "uvx",
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     // });
     // console.log('MCP Client:', azMcpClient);
 
-    const playwrightsClient = await createMCPClient({
+    const playwrightMcpClient = await createMCPClient({
       transport: {
         type: "sse",
         url: "http://localhost:8931/sse"
@@ -39,12 +39,12 @@ export async function POST(req: Request) {
     // Schema Discovery を使用して MCP サーバーからツール定義を取得
     const awsMcpTool = await awsMcpClient.tools();
     // const azMcpTool = await azMcpClient.tools();
-    const playwrightsTool = await playwrightsClient.tools();
+    const playwrightMcpTool = await playwrightMcpClient.tools();
 
     const tools = {
       ...awsMcpTool,
       // ...azMcpTool,
-      ...playwrightsTool,
+      ...playwrightMcpTool,
     }
 
     // Vercel AI SDK の streamText 関数を使用して LLM とのストリーミング通信を開始
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
         // ストリーミング応答が完了したら、必ず MCP クライアントの接続を閉じる
         await awsMcpClient.close();
         // await azMcpClient.close();
-        await playwrightsClient.close();
+        await playwrightMcpClient.close();
       },
     });
     // ストリーミング応答をクライアントに返す
